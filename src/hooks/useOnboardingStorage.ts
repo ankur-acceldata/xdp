@@ -1,11 +1,12 @@
 import { FormData } from '@/components/onboarding/OnboardingWizard';
+import { useCallback } from 'react';
 
 const STORAGE_KEY = 'onboarding_data';
 
 const isClient = typeof window !== 'undefined';
 
 export function useOnboardingStorage() {
-  const saveFormData = (data: Partial<FormData>) => {
+  const saveFormData = useCallback((data: Partial<FormData>) => {
     if (!isClient) return;
     
     try {
@@ -16,9 +17,9 @@ export function useOnboardingStorage() {
     } catch (error) {
       console.error('Error saving onboarding data:', error);
     }
-  };
+  }, []);
 
-  const getFormData = (): FormData | null => {
+  const getFormData = useCallback((): FormData | null => {
     if (!isClient) return null;
     
     try {
@@ -28,9 +29,9 @@ export function useOnboardingStorage() {
       console.error('Error reading onboarding data:', error);
       return null;
     }
-  };
+  }, []);
 
-  const clearFormData = () => {
+  const clearFormData = useCallback(() => {
     if (!isClient) return;
     
     try {
@@ -38,12 +39,12 @@ export function useOnboardingStorage() {
     } catch (error) {
       console.error('Error clearing onboarding data:', error);
     }
-  };
+  }, []);
 
-  const hasFormData = (): boolean => {
+  const hasFormData = useCallback((): boolean => {
     if (!isClient) return false;
     return !!localStorage.getItem(STORAGE_KEY);
-  };
+  }, []);
 
   return {
     saveFormData,

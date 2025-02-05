@@ -150,13 +150,21 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Load saved data on mount
   useEffect(() => {
     const savedData = getFormData();
     if (savedData) {
       setFormData(savedData);
     }
     setIsLoading(false);
-  }, [getFormData]);
+  }, []);
+
+  // Save data whenever formData changes
+  useEffect(() => {
+    if (!isLoading) {
+      saveFormData(formData);
+    }
+  }, [formData, isLoading]);
 
   const CurrentStepComponent = steps[currentStep].component;
 
@@ -180,9 +188,6 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
     if (onComplete) {
       onComplete(formData);
     } else {
-      // Save final form data
-      saveFormData(formData);
-      
       // Create cluster data
       const newCluster = {
         id: crypto.randomUUID(),
@@ -210,12 +215,7 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
   };
 
   const updateFormData = (newData: Partial<FormData>) => {
-    setFormData((prevData) => {
-      const updatedData = { ...prevData, ...newData };
-      // Save to local storage whenever form data changes
-      saveFormData(updatedData);
-      return updatedData;
-    });
+    setFormData(prevData => ({ ...prevData, ...newData }));
   };
 
   const stepsWithStatus = steps.map((step, index) => ({

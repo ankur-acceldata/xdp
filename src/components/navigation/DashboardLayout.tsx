@@ -7,9 +7,11 @@ import { classNames } from './NavigationConfig'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
+  logo?: string
+  title?: string
 }
 
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+export function DashboardLayout({ children, logo = "/images/ad-logo-white.png", title }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -18,7 +20,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar 
         sidebarOpen={sidebarOpen} 
         setSidebarOpen={setSidebarOpen} 
-        logo="/images/ad-logo-white.png"
+        logo={logo}
         isCollapsed={isCollapsed}
       />
 
@@ -51,8 +53,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
           </div>
 
-          <div className="flex flex-1 justify-end gap-x-4 self-stretch lg:gap-x-6">
-            {/* Add your header content here */}
+          <div className="flex flex-1 justify-between gap-x-4 self-stretch lg:gap-x-6">
+            {title && (
+              <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
+            )}
+            <div className="flex items-center gap-x-4">
+              {/* Add your header content here */}
+            </div>
           </div>
         </div>
 

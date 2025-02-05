@@ -1,9 +1,10 @@
 import { useOnboardingStorage } from './useOnboardingStorage';
+import { useCallback } from 'react';
 
 export function useDashboardData() {
   const { getFormData } = useOnboardingStorage();
 
-  const getClusterConfig = () => {
+  const getClusterConfig = useCallback(() => {
     const data = getFormData();
     if (!data) return null;
 
@@ -14,9 +15,9 @@ export function useDashboardData() {
       registry: data.registry,
       registryPrefix: data.registryPrefix,
     };
-  };
+  }, [getFormData]);
 
-  const getPostgresConfig = () => {
+  const getPostgresConfig = useCallback(() => {
     const data = getFormData();
     if (!data) return null;
 
@@ -27,9 +28,9 @@ export function useDashboardData() {
       username: data.username,
       password: data.password,
     };
-  };
+  }, [getFormData]);
 
-  const getMinioConfig = () => {
+  const getMinioConfig = useCallback(() => {
     const data = getFormData();
     if (!data) return null;
 
@@ -41,9 +42,9 @@ export function useDashboardData() {
       region: data.minioRegion,
       secure: data.minioSecure,
     };
-  };
+  }, [getFormData]);
 
-  const getSparkConfig = () => {
+  const getSparkConfig = useCallback(() => {
     const data = getFormData();
     if (!data) return null;
 
@@ -57,9 +58,9 @@ export function useDashboardData() {
       pythonVersion: data.sparkPythonVersion,
       configureYarn: data.sparkConfigureYarn,
     };
-  };
+  }, [getFormData]);
 
-  const getJupyterConfig = () => {
+  const getJupyterConfig = useCallback(() => {
     const data = getFormData();
     if (!data) return null;
 
@@ -73,7 +74,7 @@ export function useDashboardData() {
       enableCollaboration: data.jupyterEnableCollaboration,
       maxUploadSize: data.jupyterMaxUploadSize,
     };
-  };
+  }, [getFormData]);
 
   return {
     getClusterConfig,

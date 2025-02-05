@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/navigation/DashboardLayout';
-import { useDashboardData } from '@/hooks/useDashboardData';
+import { useOnboardingStorage } from '@/hooks/useOnboardingStorage';
+import { Button } from '@/components/ui/button';
 
 interface DataSource {
   id: string;
@@ -17,56 +18,37 @@ interface DataSource {
   createdAt: string;
 }
 
-interface ClusterConfig {
-  configuration: {
-    database: string;
-    host: string;
-    port: string;
-    username: string;
-  };
-  createdAt: string;
-}
-
-type PostgresConfig = ReturnType<ReturnType<typeof useDashboardData>['getPostgresConfig']>;
-type MinioConfig = ReturnType<ReturnType<typeof useDashboardData>['getMinioConfig']>;
-
 export default function DataSourcesPage() {
   const router = useRouter();
-  const { getPostgresConfig, getMinioConfig } = useDashboardData();
+  const { getFormData } = useOnboardingStorage();
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
-  const [postgresConfig, setPostgresConfig] = useState<PostgresConfig>(null);
-  const [minioConfig, setMinioConfig] = useState<MinioConfig>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const postgres = getPostgresConfig();
-    const minio = getMinioConfig();
-    setPostgresConfig(postgres);
-    setMinioConfig(minio);
+    // Load data from onboarding storage
+    const onboardingData = getFormData();
+    
+    if (onboardingData) {
+      // Create a data source from PostgreSQL configuration
+      const postgresSource: DataSource = {
+        id: crypto.randomUUID(),
+        name: onboardingData.database,
+        type: 'PostgreSQL',
+        host: onboardingData.host,
+        port: onboardingData.port,
+        database: onboardingData.database,
+        username: onboardingData.username,
+        createdAt: new Date().toISOString(),
+      };
+      setDataSources([postgresSource]);
+    }
+    
     setIsLoading(false);
-  }, [getPostgresConfig, getMinioConfig]);
-
-  useEffect(() => {
-    // Load data sources from localStorage
-    const clusters = JSON.parse(localStorage.getItem('clusters') || '[]');
-    const sources = clusters.map((cluster: ClusterConfig) => ({
-      id: crypto.randomUUID(),
-      name: cluster.configuration.database,
-      type: 'PostgreSQL',
-      host: cluster.configuration.host,
-      port: cluster.configuration.port,
-      database: cluster.configuration.database,
-      username: cluster.configuration.username,
-      createdAt: cluster.createdAt,
-    }));
-    setDataSources(sources);
-  }, []);
+  }, [getFormData]);
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this data source?')) {
       setDataSources(dataSources.filter(source => source.id !== id));
-      // Update localStorage
-      // Note: This is a simplified version. In a real app, you'd need to update the cluster configuration as well
     }
   };
 
@@ -80,7 +62,7 @@ export default function DataSourcesPage() {
     );
   }
 
-  if (!postgresConfig && !minioConfig) {
+  if (dataSources.length === 0) {
     return (
       <DashboardLayout>
         <div className="px-4 sm:px-6 lg:px-8">
@@ -104,14 +86,13 @@ export default function DataSourcesPage() {
             </p>
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <button
-              type="button"
+            <Button
               onClick={() => router.push('/dashboard/data-sources/create')}
-              className="inline-flex items-center gap-x-2 rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500"
+              className="gap-x-2"
             >
               <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
               Add Data Source
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -119,44 +100,46 @@ export default function DataSourcesPage() {
           {dataSources.map((source) => (
             <div
               key={source.id}
-              className="relative flex flex-col rounded-lg border border-gray-300 bg-white p-6 shadow-sm"
+              className="relative flex flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow duration-200 ring-1 ring-gray-200/50"
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium text-gray-900">{source.name}</h3>
-                <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                <span className="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700 border border-green-100">
                   {source.type}
                 </span>
               </div>
               <dl className="mt-4 flex flex-grow flex-col justify-between">
                 <div className="space-y-3">
-                  <div>
+                  <div className="border-b border-gray-100 pb-3">
                     <dt className="text-sm font-medium text-gray-500">Host</dt>
                     <dd className="mt-1 text-sm text-gray-900">{source.host}:{source.port}</dd>
                   </div>
-                  <div>
+                  <div className="border-b border-gray-100 pb-3">
                     <dt className="text-sm font-medium text-gray-500">Database</dt>
                     <dd className="mt-1 text-sm text-gray-900">{source.database}</dd>
                   </div>
-                  <div>
+                  <div className="pb-3">
                     <dt className="text-sm font-medium text-gray-500">Username</dt>
                     <dd className="mt-1 text-sm text-gray-900">{source.username}</dd>
                   </div>
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">
-                  <button
+                  <Button
                     onClick={() => router.push(`/dashboard/data-sources/${source.id}/edit`)}
-                    className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    variant="outline"
+                    size="sm"
                   >
                     <PencilIcon className="h-4 w-4 mr-1" />
                     Edit
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => handleDelete(source.id)}
-                    className="inline-flex items-center rounded-md bg-red-50 px-2.5 py-1.5 text-sm font-semibold text-red-700 shadow-sm ring-1 ring-inset ring-red-600/10 hover:bg-red-100"
+                    variant="destructive"
+                    size="sm"
                   >
                     <TrashIcon className="h-4 w-4 mr-1" />
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </dl>
             </div>

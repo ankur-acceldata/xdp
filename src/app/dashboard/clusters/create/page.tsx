@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+import { DashboardLayout } from '@/components/navigation/DashboardLayout';
 import OnboardingWizard, { FormData } from '@/components/onboarding/OnboardingWizard';
 
 export default function CreateClusterPage() {
@@ -32,19 +33,21 @@ export default function CreateClusterPage() {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-2xl font-semibold text-gray-900">Create New Cluster</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            Configure your new cluster by following the steps below.
-          </p>
+    <DashboardLayout>
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="sm:flex sm:items-center">
+          <div className="sm:flex-auto">
+            <h1 className="text-2xl font-semibold text-gray-900">Create New Cluster</h1>
+            <p className="mt-2 text-sm text-gray-700">
+              Configure your new cluster by following the steps below.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <OnboardingWizard onComplete={handleComplete} />
         </div>
       </div>
-
-      <div className="mt-8">
-        <OnboardingWizard onComplete={handleComplete} />
-      </div>
-    </div>
+    </DashboardLayout>
   );
 } 
