@@ -1,0 +1,17 @@
+.login-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.bottom-cloud{
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 70%;
+  bottom: 0.14%;
+  background: radial-gradient(50% 102.07% at 50% 50%, #F2F4F8 0%, rgba(216, 220, 229, 0.4) 100%);
+  background-image: url(/images/sun_in_the_clouds.svg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  z-index: -1;
+}
