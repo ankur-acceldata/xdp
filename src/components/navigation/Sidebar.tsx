@@ -3,9 +3,9 @@
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import Link from 'next/link'
 import { navigation } from './NavigationConfig'
 import { NavigationLink } from './NavigationItem'
-import { classNames } from './NavigationConfig'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket } from '@fortawesome/pro-solid-svg-icons'
 
@@ -13,10 +13,9 @@ interface SidebarProps {
   sidebarOpen: boolean
   setSidebarOpen: (open: boolean) => void
   logo: string
-  isCollapsed: boolean
 }
 
-export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: SidebarProps) {
+export function Sidebar({ sidebarOpen, setSidebarOpen, logo }: SidebarProps) {
   return (
     <>
       {/* Mobile sidebar */}
@@ -39,25 +38,14 @@ export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: Side
                 </button>
               </div>
             </TransitionChild>
-            <SidebarContent 
-              logo={logo} 
-              isCollapsed={false}
-            />
+            <SidebarContent logo={logo} />
           </DialogPanel>
         </div>
       </Dialog>
 
       {/* Desktop sidebar */}
-      <div className={classNames(
-        'fixed inset-y-0 left-0 z-50 flex-col',
-        'transition-all duration-300',
-        'hidden lg:block',
-        isCollapsed ? 'w-20' : 'w-64'
-      )}>
-        <SidebarContent 
-          logo={isCollapsed ? '/images/ad-logo-white-icon.svg' : logo} 
-          isCollapsed={isCollapsed}
-        />
+      <div className="fixed inset-y-0 left-0 z-50 hidden w-20 lg:block">
+        <SidebarContent logo="/images/ad-logo-white-icon.svg" />
       </div>
     </>
   )
@@ -65,19 +53,18 @@ export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: Side
 
 interface SidebarContentProps {
   logo: string
-  isCollapsed: boolean
 }
 
-function SidebarContent({ logo, isCollapsed }: SidebarContentProps) {
+function SidebarContent({ logo }: SidebarContentProps) {
   return (
-    <div className="flex h-full w-full grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
-      <div className="flex h-16 shrink-0 items-center">
+    <div className="flex h-full w-full grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-2 pb-2 ring-1 ring-white/10">
+      <div className="flex h-16 shrink-0 items-center justify-center">
         <Image
           alt="Acceldata"
           src={logo}
-          width={isCollapsed ? 32 : 128}
+          width={32}
           height={32}
-          className={`${isCollapsed ? 'w-8' : 'w-auto'} h-8`}
+          className="h-8 w-8"
           priority
         />
       </div>
@@ -89,24 +76,19 @@ function SidebarContent({ logo, isCollapsed }: SidebarContentProps) {
                 <NavigationLink 
                   key={item.name} 
                   item={item}
-                  isCollapsed={isCollapsed} 
                 />
               ))}
             </ul>
           </li>
           <li className="mt-auto">
             <div className="border-t border-gray-800 pt-3">
-              <a
+              <Link
                 href="/login"
-                className={classNames(
-                  'text-gray-400 hover:bg-gray-800 hover:text-white',
-                  'group flex items-center gap-x-3 rounded-md py-3 px-3 text-sm font-semibold leading-6',
-                  isCollapsed ? 'justify-center' : ''
-                )}
+                className="text-gray-400 hover:bg-gray-800 hover:text-white group flex flex-col items-center gap-y-2 rounded-md py-3 px-4 text-sm font-semibold"
               >
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="size-5 shrink-0" />
-                {!isCollapsed && 'Logout'}
-              </a>
+                <span className="text-xs text-center w-full">Logout</span>
+              </Link>
             </div>
           </li>
         </ul>
