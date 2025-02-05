@@ -7,10 +7,9 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline'
 interface DashboardLayoutProps {
   children: React.ReactNode
   logo?: string
-  title?: string
 }
 
-export function DashboardLayout({ children, logo = "/images/ad-logo-white.png", title }: DashboardLayoutProps) {
+export function DashboardLayout({ children, logo = "/images/ad-logo-white.png" }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
@@ -32,10 +31,7 @@ export function DashboardLayout({ children, logo = "/images/ad-logo-white.png", 
             <ChevronRightIcon className="h-6 w-6" aria-hidden="true" />
           </button>
 
-          <div className="flex flex-1 justify-between gap-x-4 self-stretch lg:gap-x-6">
-            {title && (
-              <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
-            )}
+          <div className="flex flex-1 justify-end gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex items-center gap-x-4">
               {/* Add your header content here */}
             </div>

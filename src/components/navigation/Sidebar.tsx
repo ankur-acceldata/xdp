@@ -84,7 +84,7 @@ function SidebarContent({ logo }: SidebarContentProps) {
             <div className="border-t border-gray-800 pt-3">
               <Link
                 href="/login"
-                className="text-gray-400 hover:bg-gray-800 hover:text-white group flex flex-col items-center gap-y-2 rounded-md py-3 px-4 text-sm font-semibold"
+                className="text-gray-400 hover:bg-gray-800 hover:text-white group flex flex-col items-center gap-y-2 rounded-md p-2 m-2 text-sm font-semibold"
               >
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="size-5 shrink-0" />
                 <span className="text-xs text-center w-full">Logout</span>

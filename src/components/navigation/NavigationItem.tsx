@@ -21,7 +21,7 @@ export function NavigationLink({ item }: NavigationItemProps) {
           isCurrent
             ? 'bg-gray-800 text-white'
             : 'text-gray-400 hover:bg-gray-800 hover:text-white',
-          'group flex flex-col items-center gap-y-2 rounded-md py-3 px-4 text-sm font-semibold'
+          'group flex flex-col items-center gap-y-2 rounded-md p-2 text-sm font-semibold m-2'
         )}
       >
         <item.icon icon={item.iconDef} className="size-5 shrink-0" />
