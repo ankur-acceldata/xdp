@@ -27,6 +27,23 @@ export default function ClustersPage() {
     const storedClusters = localStorage.getItem('clusters');
     if (storedClusters) {
       setClusters(JSON.parse(storedClusters));
+    } else {
+      // If no clusters in localStorage, check onboarding data
+      const onboardingData = localStorage.getItem('onboarding_data');
+      if (onboardingData) {
+        const formData = JSON.parse(onboardingData);
+        const newCluster: Cluster = {
+          id: crypto.randomUUID(),
+          name: formData.clusterName,
+          namespace: formData.namespace,
+          version: formData.version,
+          status: 'stopped' as const,
+          createdAt: new Date().toISOString(),
+          configuration: formData,
+        };
+        setClusters([newCluster]);
+        localStorage.setItem('clusters', JSON.stringify([newCluster]));
+      }
     }
     setIsLoading(false);
   }, []);

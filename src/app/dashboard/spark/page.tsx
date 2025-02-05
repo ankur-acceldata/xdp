@@ -51,30 +51,28 @@ export default function SparkPage() {
         </div>
         
         <div className="mt-8">
-          <div className="bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg">
+          <div className="max-w-3xl mx-auto bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg">
             {/* Master URL and Python Version */}
-            <div className="border-b border-gray-200 p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Master URL</h3>
-                  <p className="mt-1 text-sm text-gray-900">{sparkConfig.master}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Python Version</h3>
-                  <p className="mt-1 text-sm text-gray-900">{sparkConfig.pythonVersion}</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-100">
+              <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
+                <h3 className="text-sm font-medium text-gray-500">Master URL</h3>
+                <p className="mt-1 text-sm text-gray-900">{sparkConfig.master}</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-500">Python Version</h3>
+                <p className="mt-1 text-sm text-gray-900">{sparkConfig.pythonVersion}</p>
               </div>
             </div>
 
             {/* Executor Settings */}
-            <div className="border-b border-gray-200 p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Executor Configuration</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
+            <div className="border-b border-gray-100">
+              <h3 className="text-sm font-medium text-gray-900 p-4 pb-2">Executor Configuration</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 pt-2">
+                <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
                   <h4 className="text-sm font-medium text-gray-500">Instances</h4>
                   <p className="mt-1 text-sm text-gray-900">{sparkConfig.executorInstances}</p>
                 </div>
-                <div>
+                <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
                   <h4 className="text-sm font-medium text-gray-500">Cores per Executor</h4>
                   <p className="mt-1 text-sm text-gray-900">{sparkConfig.executorCores}</p>
                 </div>
@@ -86,14 +84,14 @@ export default function SparkPage() {
             </div>
 
             {/* Driver Settings */}
-            <div className="p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Driver Configuration</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
+            <div>
+              <h3 className="text-sm font-medium text-gray-900 p-4 pb-2">Driver Configuration</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 pt-2">
+                <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
                   <h4 className="text-sm font-medium text-gray-500">Cores</h4>
                   <p className="mt-1 text-sm text-gray-900">{sparkConfig.driverCores}</p>
                 </div>
-                <div>
+                <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
                   <h4 className="text-sm font-medium text-gray-500">Memory</h4>
                   <p className="mt-1 text-sm text-gray-900">{sparkConfig.driverMemory}</p>
                 </div>

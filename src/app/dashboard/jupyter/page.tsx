@@ -50,23 +50,25 @@ export default function JupyterPage() {
           </div>
         </div>
 
-        <div className="mt-8 bg-white shadow rounded-lg p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-sm font-medium text-gray-500">Port</h3>
-              <p className="mt-1 text-sm text-gray-900">{jupyterConfig.port}</p>
-            </div>
-            <div>
-              <h3 className="text-sm font-medium text-gray-500">Base URL</h3>
-              <p className="mt-1 text-sm text-gray-900">{jupyterConfig.baseUrl}</p>
-            </div>
-            <div>
-              <h3 className="text-sm font-medium text-gray-500">Default Kernel</h3>
-              <p className="mt-1 text-sm text-gray-900">{jupyterConfig.defaultKernel}</p>
-            </div>
-            <div>
-              <h3 className="text-sm font-medium text-gray-500">Workspace Path</h3>
-              <p className="mt-1 text-sm text-gray-900">{jupyterConfig.workspacePath}</p>
+        <div className="mt-8">
+          <div className="max-w-3xl mx-auto bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+              <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
+                <h3 className="text-sm font-medium text-gray-500">Port</h3>
+                <p className="mt-1 text-sm text-gray-900">{jupyterConfig.port}</p>
+              </div>
+              <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
+                <h3 className="text-sm font-medium text-gray-500">Base URL</h3>
+                <p className="mt-1 text-sm text-gray-900">{jupyterConfig.baseUrl}</p>
+              </div>
+              <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
+                <h3 className="text-sm font-medium text-gray-500">Default Kernel</h3>
+                <p className="mt-1 text-sm text-gray-900">{jupyterConfig.defaultKernel}</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-gray-500">Workspace Path</h3>
+                <p className="mt-1 text-sm text-gray-900">{jupyterConfig.workspacePath}</p>
+              </div>
             </div>
           </div>
         </div>
