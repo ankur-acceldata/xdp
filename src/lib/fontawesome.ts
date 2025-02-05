@@ -19,7 +19,8 @@ import {
   faFlask,
   faChartLine,
   faGear,
-  faHome
+  faHome,
+  faArrowRightFromBracket
 } from '@fortawesome/pro-solid-svg-icons';
 
 import {
@@ -51,6 +52,7 @@ library.add(
   faChartLine,
   faGear,
   faHome,
+  faArrowRightFromBracket,
   
   // Light icons
   faCircleInfo,

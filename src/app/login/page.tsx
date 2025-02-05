@@ -17,7 +17,7 @@ export default function LoginPage() {
     
     // After successful login, check if cluster data exists
     if (hasClusterData()) {
-      router.push('/dashboard');
+      router.push('/dashboard/clusters');
     } else {
       router.push('/onboarding');
     }

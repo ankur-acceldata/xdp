@@ -66,7 +66,7 @@ export default function JupyterSetup({
     e.preventDefault();
     if (isLastStep) {
       // Navigate to dashboard after completing setup
-      router.push('/dashboard');
+      router.push('/dashboard/clusters');
     } else {
       onNext();
     }

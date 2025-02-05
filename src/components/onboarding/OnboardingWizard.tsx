@@ -204,7 +204,7 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
       localStorage.setItem('clusters', JSON.stringify(clusters));
       
       // Redirect to dashboard
-      router.push('/dashboard');
+      router.push('/dashboard/clusters');
     }
   };
 

@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { navigation } from './NavigationConfig'
 import { NavigationLink } from './NavigationItem'
 import { classNames } from './NavigationConfig'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRightFromBracket } from '@fortawesome/pro-solid-svg-icons'
 
 interface SidebarProps {
   sidebarOpen: boolean
@@ -91,6 +93,21 @@ function SidebarContent({ logo, isCollapsed }: SidebarContentProps) {
                 />
               ))}
             </ul>
+          </li>
+          <li className="mt-auto">
+            <div className="border-t border-gray-800 pt-3">
+              <a
+                href="/login"
+                className={classNames(
+                  'text-gray-400 hover:bg-gray-800 hover:text-white',
+                  'group flex items-center gap-x-3 rounded-md py-3 px-3 text-sm font-semibold leading-6',
+                  isCollapsed ? 'justify-center' : ''
+                )}
+              >
+                <FontAwesomeIcon icon={faArrowRightFromBracket} className="size-5 shrink-0" />
+                {!isCollapsed && 'Logout'}
+              </a>
+            </div>
           </li>
         </ul>
       </nav>
