@@ -51,7 +51,7 @@ export default function SparkPage() {
         </div>
         
         <div className="mt-8">
-          <div className="max-w-3xl mx-auto bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg">
+          <div className="bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg max-w-3xl">
             {/* Master URL and Python Version */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-100">
               <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">

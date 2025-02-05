@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { PlusIcon, PlayIcon, StopIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { DashboardLayout } from '@/components/navigation/DashboardLayout';
 import { FormData } from '@/components/onboarding/OnboardingWizard';
 import { Button } from '@/components/ui/button';
@@ -54,21 +54,6 @@ export default function ClustersPage() {
       setClusters(updatedClusters);
       localStorage.setItem('clusters', JSON.stringify(updatedClusters));
     }
-  };
-
-  const toggleClusterStatus = (id: string) => {
-    const updatedClusters = clusters.map(cluster => {
-      if (cluster.id === id) {
-        const newStatus = cluster.status === 'running' ? 'stopped' as const : 'running' as const;
-        return {
-          ...cluster,
-          status: newStatus
-        };
-      }
-      return cluster;
-    });
-    setClusters(updatedClusters);
-    localStorage.setItem('clusters', JSON.stringify(updatedClusters));
   };
 
   if (isLoading) {
@@ -132,17 +117,6 @@ export default function ClustersPage() {
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium text-gray-900">{cluster.name}</h3>
-                <span 
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border ${
-                    cluster.status === 'running' 
-                      ? 'bg-green-50 text-green-700 border-green-100' 
-                      : cluster.status === 'error'
-                      ? 'bg-red-50 text-red-700 border-red-100'
-                      : 'bg-gray-50 text-gray-700 border-gray-100'
-                  }`}
-                >
-                  {cluster.status.charAt(0).toUpperCase() + cluster.status.slice(1)}
-                </span>
               </div>
               <dl className="mt-4 flex flex-grow flex-col justify-between">
                 <div className="space-y-3">
@@ -166,23 +140,6 @@ export default function ClustersPage() {
                   </div>
                 </div>
                 <div className="mt-6 flex justify-end space-x-3">
-                  <Button
-                    onClick={() => toggleClusterStatus(cluster.id)}
-                    variant={cluster.status === 'running' ? 'destructive' : 'default'}
-                    size="sm"
-                  >
-                    {cluster.status === 'running' ? (
-                      <>
-                        <StopIcon className="h-4 w-4 mr-1" />
-                        Stop
-                      </>
-                    ) : (
-                      <>
-                        <PlayIcon className="h-4 w-4 mr-1" />
-                        Start
-                      </>
-                    )}
-                  </Button>
                   <Button
                     onClick={() => router.push(`/dashboard/clusters/${cluster.id}`)}
                     variant="outline"

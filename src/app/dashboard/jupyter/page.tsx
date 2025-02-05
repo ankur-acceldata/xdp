@@ -17,7 +17,7 @@ export default function JupyterPage() {
 
   if (isLoading) {
     return (
-      <DashboardLayout title="Jupyter">
+      <DashboardLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
         </div>
@@ -27,7 +27,7 @@ export default function JupyterPage() {
 
   if (!jupyterConfig) {
     return (
-      <DashboardLayout title="Jupyter">
+      <DashboardLayout>
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
             <h3 className="mt-2 text-sm font-semibold text-gray-900">No Jupyter Configuration Found</h3>
@@ -39,7 +39,7 @@ export default function JupyterPage() {
   }
 
   return (
-    <DashboardLayout title="Jupyter">
+    <DashboardLayout>
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
@@ -51,7 +51,7 @@ export default function JupyterPage() {
         </div>
 
         <div className="mt-8">
-          <div className="max-w-3xl mx-auto bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg">
+          <div className="bg-white shadow-sm ring-1 ring-gray-200/50 rounded-lg max-w-3xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
               <div className="border-b border-gray-100 pb-3 md:border-b-0 md:pb-0">
                 <h3 className="text-sm font-medium text-gray-500">Port</h3>
