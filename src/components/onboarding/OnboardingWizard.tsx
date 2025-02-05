@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStorage } from '@/hooks/useOnboardingStorage';
+import { Button } from '@/components/ui/button';
 import ClusterSetup from './steps/ClusterSetup';
 import PostgresSetup from './steps/PostgresSetup';
 import MinioSetup from './steps/MinioSetup';

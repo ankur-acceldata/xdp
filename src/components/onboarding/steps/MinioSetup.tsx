@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface FormData {
   minioEndpoint: string;
@@ -181,34 +182,27 @@ export default function MinioSetup({
       )}
 
       <div className="flex justify-between space-x-4">
-        <button
+        <Button
           type="button"
+          variant="outline"
           onClick={onBack}
-          className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Back
-        </button>
+        </Button>
         <div className="flex space-x-4">
-          <button
+          <Button
             type="button"
             onClick={testConnection}
             disabled={testStatus === 'testing'}
-            className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white ${
-              testStatus === 'testing'
-                ? 'bg-gray-400 cursor-not-allowed'
-                : testStatus === 'success'
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-blue-600 hover:bg-blue-700'
-            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+            variant={testStatus === 'success' ? 'secondary' : 'default'}
           >
             {testStatus === 'testing' ? 'Testing...' : testStatus === 'success' ? 'Connected!' : 'Test Connection'}
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             {isLastStep ? 'Complete Setup' : 'Next'}
-          </button>
+          </Button>
         </div>
       </div>
     </form>
