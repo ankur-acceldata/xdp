@@ -4,7 +4,6 @@ import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessu
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { navigation } from './NavigationConfig'
 import { NavigationLink } from './NavigationItem'
-import { usePathname } from 'next/navigation'
 import { classNames } from './NavigationConfig'
 
 interface SidebarProps {
@@ -15,8 +14,6 @@ interface SidebarProps {
 }
 
 export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: SidebarProps) {
-  const pathname = usePathname()
-
   return (
     <>
       {/* Mobile sidebar */}
@@ -41,8 +38,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: Side
             </TransitionChild>
             <SidebarContent 
               logo={logo} 
-              isCollapsed={false} 
-              pathname={pathname}
+              isCollapsed={false}
             />
           </DialogPanel>
         </div>
@@ -58,7 +54,6 @@ export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: Side
         <SidebarContent 
           logo={isCollapsed ? '/images/ad-logo-white-icon.svg' : logo} 
           isCollapsed={isCollapsed}
-          pathname={pathname}
         />
       </div>
     </>
@@ -68,10 +63,9 @@ export function Sidebar({ sidebarOpen, setSidebarOpen, logo, isCollapsed }: Side
 interface SidebarContentProps {
   logo: string
   isCollapsed: boolean
-  pathname: string
 }
 
-function SidebarContent({ logo, isCollapsed, pathname }: SidebarContentProps) {
+function SidebarContent({ logo, isCollapsed }: SidebarContentProps) {
   return (
     <div className="flex h-full w-full grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
       <div className="flex h-16 shrink-0 items-center">
@@ -84,10 +78,7 @@ function SidebarContent({ logo, isCollapsed, pathname }: SidebarContentProps) {
               {navigation.map((item) => (
                 <NavigationLink 
                   key={item.name} 
-                  item={{
-                    ...item,
-                    current: pathname === item.href
-                  }} 
+                  item={item}
                   isCollapsed={isCollapsed} 
                 />
               ))}

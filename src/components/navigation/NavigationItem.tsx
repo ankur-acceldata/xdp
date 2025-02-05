@@ -2,6 +2,7 @@
 
 import type { NavigationItem as NavItem } from './NavigationConfig'
 import { classNames } from './NavigationConfig'
+import { usePathname } from 'next/navigation'
 import {
   Tooltip,
   TooltipContent,
@@ -15,18 +16,21 @@ interface NavigationItemProps {
 }
 
 export function NavigationLink({ item, isCollapsed }: NavigationItemProps) {
+  const pathname = usePathname()
+  const isCurrent = pathname === item.href
+
   const linkContent = (
     <a
       href={item.href}
       className={classNames(
-        item.current
+        isCurrent
           ? 'bg-gray-800 text-white'
           : 'text-gray-400 hover:bg-gray-800 hover:text-white',
-        'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
+        'group flex items-center gap-x-3 rounded-md py-3 px-3 text-sm font-semibold leading-6',
         isCollapsed ? 'justify-center' : ''
       )}
     >
-      <item.icon aria-hidden="true" className="size-6 shrink-0" />
+      <item.icon icon={item.iconDef} className="size-5 shrink-0" />
       {!isCollapsed && item.name}
     </a>
   )
