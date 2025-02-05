@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { DashboardLayout } from '@/components/navigation/DashboardLayout';
+import Link from 'next/link';
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 export default function JupyterPage() {
   const { getJupyterConfig } = useDashboardData();
@@ -47,6 +50,14 @@ export default function JupyterPage() {
             <p className="mt-2 text-sm text-gray-700">
               Access and manage your Jupyter notebook environments.
             </p>
+          </div>
+          <div className="mt-4 sm:ml-16 sm:mt-0">
+            <Button asChild>
+              <Link href="/dashboard/jupyter/notebook">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Open Notebook
+              </Link>
+            </Button>
           </div>
         </div>
 
