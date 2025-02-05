@@ -1,12 +1,12 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-import OnboardingWizard from '@/components/onboarding/OnboardingWizard';
+import OnboardingWizard, { FormData } from '@/components/onboarding/OnboardingWizard';
 
 export default function CreateClusterPage() {
   const router = useRouter();
 
-  const handleComplete = (formData: any) => {
+  const handleComplete = (formData: FormData) => {
     // Get existing clusters or initialize empty array
     const existingClusters = JSON.parse(localStorage.getItem('clusters') || '[]');
     

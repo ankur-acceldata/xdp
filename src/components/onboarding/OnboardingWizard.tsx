@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useOnboardingStorage } from '@/hooks/useOnboardingStorage';
 import ClusterSetup from './steps/ClusterSetup';
 import PostgresSetup from './steps/PostgresSetup';
 import MinioSetup from './steps/MinioSetup';
@@ -106,54 +107,66 @@ const steps: Step[] = [
   }
 ];
 
+const defaultFormData: FormData = {
+  // Default values...
+  clusterName: 'ad-cluster-1',
+  namespace: 'acceldata',
+  version: 'latest',
+  registry: '191579300362.dkr.ecr.us-east-1.amazonaws.com',
+  registryPrefix: 'acceldata',
+  host: 'localhost',
+  port: '5432',
+  database: 'acceldata',
+  username: 'postgres',
+  password: 'postgres',
+  minioEndpoint: 'localhost:9000',
+  minioAccessKey: 'minioadmin',
+  minioSecretKey: 'minioadmin',
+  minioBucket: 'acceldata',
+  minioRegion: 'us-east-1',
+  minioSecure: true,
+  sparkMaster: 'local[*]',
+  sparkExecutorInstances: '2',
+  sparkExecutorCores: '2',
+  sparkExecutorMemory: '4g',
+  sparkDriverMemory: '2g',
+  sparkDriverCores: '2',
+  sparkPythonVersion: '3.9',
+  sparkConfigureYarn: false,
+  jupyterPort: '8888',
+  jupyterToken: crypto.randomUUID().slice(0, 8),
+  jupyterBaseUrl: '/jupyter',
+  jupyterWorkspacePath: '/workspace',
+  jupyterDefaultKernel: 'python3',
+  jupyterEnableAutosave: true,
+  jupyterEnableCollaboration: true,
+  jupyterMaxUploadSize: '100MB',
+};
+
 export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   const router = useRouter();
+  const { saveFormData, getFormData } = useOnboardingStorage();
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<FormData>({
-    // Cluster configuration
-    clusterName: 'ad-cluster-1',
-    namespace: 'acceldata',
-    version: 'latest',
-    registry: '191579300362.dkr.ecr.us-east-1.amazonaws.com',
-    registryPrefix: 'acceldata',
-    
-    // Postgres configuration
-    host: 'localhost',
-    port: '5432',
-    database: 'acceldata',
-    username: 'postgres',
-    password: 'postgres',
+  const [formData, setFormData] = useState<FormData>(defaultFormData);
+  const [isLoading, setIsLoading] = useState(true);
 
-    // MinIO configuration
-    minioEndpoint: 'localhost:9000',
-    minioAccessKey: 'minioadmin',
-    minioSecretKey: 'minioadmin',
-    minioBucket: 'acceldata',
-    minioRegion: 'us-east-1',
-    minioSecure: true,
-
-    // Spark configuration
-    sparkMaster: 'local[*]',
-    sparkExecutorInstances: '2',
-    sparkExecutorCores: '2',
-    sparkExecutorMemory: '4g',
-    sparkDriverMemory: '2g',
-    sparkDriverCores: '2',
-    sparkPythonVersion: '3.9',
-    sparkConfigureYarn: false,
-
-    // Jupyter configuration
-    jupyterPort: '8888',
-    jupyterToken: crypto.randomUUID().slice(0, 8),
-    jupyterBaseUrl: '/jupyter',
-    jupyterWorkspacePath: '/workspace',
-    jupyterDefaultKernel: 'python3',
-    jupyterEnableAutosave: true,
-    jupyterEnableCollaboration: true,
-    jupyterMaxUploadSize: '100MB',
-  });
+  useEffect(() => {
+    const savedData = getFormData();
+    if (savedData) {
+      setFormData(savedData);
+    }
+    setIsLoading(false);
+  }, [getFormData]);
 
   const CurrentStepComponent = steps[currentStep].component;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -167,7 +180,10 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
     if (onComplete) {
       onComplete(formData);
     } else {
-      // Default behavior if no onComplete handler is provided
+      // Save final form data
+      saveFormData(formData);
+      
+      // Create cluster data
       const newCluster = {
         id: crypto.randomUUID(),
         name: formData.clusterName,
@@ -180,8 +196,6 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
       
       // Initialize clusters array and add the new cluster
       const clusters = [newCluster];
-      
-      // Save to localStorage
       localStorage.setItem('clusters', JSON.stringify(clusters));
       
       // Redirect to dashboard
@@ -196,7 +210,12 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
   };
 
   const updateFormData = (newData: Partial<FormData>) => {
-    setFormData({ ...formData, ...newData });
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, ...newData };
+      // Save to local storage whenever form data changes
+      saveFormData(updatedData);
+      return updatedData;
+    });
   };
 
   const stepsWithStatus = steps.map((step, index) => ({

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { DashboardLayout } from '@/components/navigation/DashboardLayout';
+import { useDashboardData } from '@/hooks/useDashboardData';
 
 interface DataSource {
   id: string;
@@ -16,14 +17,39 @@ interface DataSource {
   createdAt: string;
 }
 
+interface ClusterConfig {
+  configuration: {
+    database: string;
+    host: string;
+    port: string;
+    username: string;
+  };
+  createdAt: string;
+}
+
+type PostgresConfig = ReturnType<ReturnType<typeof useDashboardData>['getPostgresConfig']>;
+type MinioConfig = ReturnType<ReturnType<typeof useDashboardData>['getMinioConfig']>;
+
 export default function DataSourcesPage() {
   const router = useRouter();
+  const { getPostgresConfig, getMinioConfig } = useDashboardData();
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
+  const [postgresConfig, setPostgresConfig] = useState<PostgresConfig>(null);
+  const [minioConfig, setMinioConfig] = useState<MinioConfig>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const postgres = getPostgresConfig();
+    const minio = getMinioConfig();
+    setPostgresConfig(postgres);
+    setMinioConfig(minio);
+    setIsLoading(false);
+  }, [getPostgresConfig, getMinioConfig]);
 
   useEffect(() => {
     // Load data sources from localStorage
     const clusters = JSON.parse(localStorage.getItem('clusters') || '[]');
-    const sources = clusters.map((cluster: any) => ({
+    const sources = clusters.map((cluster: ClusterConfig) => ({
       id: crypto.randomUUID(),
       name: cluster.configuration.database,
       type: 'PostgreSQL',
@@ -43,6 +69,29 @@ export default function DataSourcesPage() {
       // Note: This is a simplified version. In a real app, you'd need to update the cluster configuration as well
     }
   };
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!postgresConfig && !minioConfig) {
+    return (
+      <DashboardLayout>
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <h3 className="mt-2 text-sm font-semibold text-gray-900">No Data Sources Found</h3>
+            <p className="mt-1 text-sm text-gray-500">Please complete the onboarding process to configure your data sources.</p>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>

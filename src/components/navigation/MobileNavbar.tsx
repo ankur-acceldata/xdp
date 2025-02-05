@@ -1,23 +1,20 @@
 import { Bars3Icon } from '@heroicons/react/24/outline'
-import { UserProfile } from './UserProfile'
 
 interface MobileNavbarProps {
   setSidebarOpen: (open: boolean) => void
-  title: string
 }
 
-export function MobileNavbar({ setSidebarOpen, title }: MobileNavbarProps) {
+export function MobileNavbar({ setSidebarOpen }: MobileNavbarProps) {
   return (
-    <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-gray-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
       <button
         type="button"
+        className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
         onClick={() => setSidebarOpen(true)}
-        className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
       >
         <span className="sr-only">Open sidebar</span>
-        <Bars3Icon aria-hidden="true" className="size-6" />
+        <Bars3Icon className="h-6 w-6" aria-hidden="true" />
       </button>
-      <div className="flex-1 text-sm/6 font-semibold text-white">{title}</div>
     </div>
   )
 } 

@@ -2,6 +2,7 @@
 
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 import { navigation } from './NavigationConfig'
 import { NavigationLink } from './NavigationItem'
 import { classNames } from './NavigationConfig'
@@ -69,7 +70,14 @@ function SidebarContent({ logo, isCollapsed }: SidebarContentProps) {
   return (
     <div className="flex h-full w-full grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
       <div className="flex h-16 shrink-0 items-center">
-        <img alt="Acceldata" src={logo} className={`${isCollapsed ? 'w-8' : 'w-auto'} h-8`} />
+        <Image
+          alt="Acceldata"
+          src={logo}
+          width={isCollapsed ? 32 : 128}
+          height={32}
+          className={`${isCollapsed ? 'w-8' : 'w-auto'} h-8`}
+          priority
+        />
       </div>
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">

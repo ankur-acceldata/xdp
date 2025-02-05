@@ -1,50 +1,33 @@
 'use client'
 
-interface ClusterData {
-  [key: string]: any // We can make this more specific based on your form data structure
+import { FormData } from '@/components/onboarding/OnboardingWizard';
+
+interface Cluster {
+  id: string;
+  name: string;
+  namespace: string;
+  version: string;
+  status: 'running' | 'stopped' | 'error';
+  createdAt: string;
+  configuration: FormData;
 }
 
 export function useClusterStorage() {
-  const STORAGE_KEY = 'clusters'
-
-  const saveClusterData = (stepData: ClusterData) => {
-    if (typeof window === 'undefined') return
-
+  const getClusters = (): Cluster[] => {
     try {
-      const existingData = localStorage.getItem(STORAGE_KEY)
-      const data = existingData ? JSON.parse(existingData) : {}
-      const updatedData = { ...data, ...stepData }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData))
-    } catch (error) {
-      console.error('Error saving cluster data:', error)
+      return JSON.parse(localStorage.getItem('clusters') || '[]');
+    } catch {
+      return [];
     }
-  }
+  };
 
-  const getClusterData = () => {
-    if (typeof window === 'undefined') return null
-
-    try {
-      const data = localStorage.getItem(STORAGE_KEY)
-      return data ? JSON.parse(data) : null
-    } catch (error) {
-      console.error('Error getting cluster data:', error)
-      return null
-    }
-  }
-
-  const hasClusterData = () => {
-    return !!getClusterData()
-  }
-
-  const clearClusterData = () => {
-    if (typeof window === 'undefined') return
-    localStorage.removeItem(STORAGE_KEY)
-  }
+  const hasClusterData = (): boolean => {
+    const clusters = getClusters();
+    return clusters.length > 0;
+  };
 
   return {
-    saveClusterData,
-    getClusterData,
+    getClusters,
     hasClusterData,
-    clearClusterData
-  }
+  };
 } 
