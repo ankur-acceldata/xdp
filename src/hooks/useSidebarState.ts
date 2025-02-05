@@ -12,7 +12,7 @@ export function useSidebarState() {
   // After hydration, sync with localStorage
   useEffect(() => {
     const saved = localStorage.getItem(SIDEBAR_STATE_KEY)
-    setIsCollapsed(saved ? JSON.parse(saved) : false)
+    setIsCollapsed(saved ? JSON.parse(saved) : true) // Default to collapsed
     setIsHydrated(true)
   }, [])
 
@@ -24,8 +24,8 @@ export function useSidebarState() {
   }, [isCollapsed, isHydrated])
 
   return {
-    // Return false during SSR/pre-hydration
-    isCollapsed: typeof isCollapsed === 'boolean' ? isCollapsed : false,
+    // Return true during SSR/pre-hydration
+    isCollapsed: typeof isCollapsed === 'boolean' ? isCollapsed : true,
     setIsCollapsed,
     isHydrated
   }
