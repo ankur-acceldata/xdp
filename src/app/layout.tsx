@@ -26,9 +26,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="flex flex-col min-h-screen">
-            <header className="p-4 flex justify-end">
-              <ThemeSwitcher />
-            </header>
             <main className="flex-grow">
               {children}
             </main>

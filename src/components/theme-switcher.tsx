@@ -26,15 +26,16 @@ export function ThemeSwitcher() {
   return (
     <Button 
       variant="outline" 
-      size="icon" 
+      size="sm"
+      className="h-8 w-8"
       onClick={toggleTheme}
       aria-label="Toggle theme"
     >
       {theme === 'dark' ? (
-        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+        <Sun className="h-6 w-6 rotate-0 scale-100 transition-all" />
       ) : (
-        <Moon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+        <Moon className="h-6 w-6 rotate-0 scale-100 transition-all" />
       )}
     </Button>
   )
-} 
+}
