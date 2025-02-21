@@ -21,7 +21,6 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ThemeSwitcher } from "./theme-switcher"
 
 // This is sample data.
 const data = {
