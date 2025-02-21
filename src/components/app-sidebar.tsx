@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import {
   AudioWaveform,
   BookOpen,
@@ -17,13 +18,13 @@ import {
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 // This is sample data.
@@ -156,11 +157,31 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  const { state } = useSidebar()
+
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+      <SidebarHeader className="flex items-center space-x-2 p-2">
+        {state === "collapsed" ? (
+          <Image 
+            src="/assets/images/logo-lg.png" 
+            alt="Cross Data Platform" 
+            width={50} 
+            height={50} 
+            className="mx-auto"
+          />
+        ) : (
+          <div className="flex items-center space-x-2">
+            <Image 
+              src="/assets/images/logo-lg.png" 
+              alt="Cross Data Platform" 
+              width={50} 
+              height={50} 
+            />
+            <span className="text-lg font-semibold">Cross Data Platform</span>
+          </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
