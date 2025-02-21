@@ -7,8 +7,8 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Theme Switcher App",
-  description: "Next.js app with theme support",
+  title: "xDP",
+  description: "Cross Data Platform",
 };
 
 export default function RootLayout({
