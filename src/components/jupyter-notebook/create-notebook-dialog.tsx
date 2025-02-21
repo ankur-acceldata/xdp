@@ -53,7 +53,7 @@ export function CreateNotebookDialog() {
       // Reset form
       setNotebookName("")
       setNotebookType("python")
-    } catch (error) {
+    } catch {
       alert("Failed to create notebook. Please try again.")
     } finally {
       setIsCreating(false)
