@@ -1,0 +1,30 @@
+{
+  "jobs": [
+    {
+      "id": "job-001",
+      "name": "Daily Data Sync",
+      "createdBy": "John Doe",
+      "createdAt": "2024-02-24T10:30:00Z",
+      "recentRuns": [
+        { "status": "success", "timestamp": "2024-02-25T10:35:00Z" },
+        { "status": "success", "timestamp": "2024-02-24T10:35:00Z" },
+        { "status": "failed", "timestamp": "2024-02-23T10:35:00Z" },
+        { "status": "success", "timestamp": "2024-02-22T10:35:00Z" },
+        { "status": "success", "timestamp": "2024-02-21T10:35:00Z" }
+      ]
+    },
+    {
+      "id": "job-002", 
+      "name": "Weekly Backup",
+      "createdBy": "Jane Smith",
+      "createdAt": "2024-02-20T14:45:00Z",
+      "recentRuns": [
+        { "status": "success", "timestamp": "2024-02-25T14:50:00Z" },
+        { "status": "success", "timestamp": "2024-02-18T14:50:00Z" },
+        { "status": "success", "timestamp": "2024-02-11T14:50:00Z" },
+        { "status": "success", "timestamp": "2024-02-04T14:50:00Z" },
+        { "status": null }
+      ]
+    }
+  ]
+} 

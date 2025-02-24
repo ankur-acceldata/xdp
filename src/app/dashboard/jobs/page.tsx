@@ -2,7 +2,9 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { FilterToolbar } from '@/components/filter-toolbar'
+import { JobsTable } from '@/components/jobs-table'
 import { Plus } from 'lucide-react'
+import jobsData from '@/lib/data/jobs.json'
 
 export default function JobsPage() {
   return (
@@ -19,9 +21,11 @@ export default function JobsPage() {
           placeholder="Search jobs..."
           className="w-full"
         />
-        {/* Add more filter components as needed */}
       </FilterToolbar>
-      {/* Rest of the jobs page content */}
+      
+      <div className="mt-4">
+        <JobsTable jobs={jobsData.jobs} />
+      </div>
     </div>
   )
 }
