@@ -18,7 +18,11 @@ export interface Job {
   name: string;
   createdBy: string;
   createdAt: string;
-  recentRuns: Array<{ status: string | null, timestamp?: string }>;
+  recentRuns: Array<{ 
+    id?: string; 
+    status: string | null, 
+    timestamp?: string 
+  } | null>;
 }
 
 interface JobsTableProps {
@@ -47,7 +51,8 @@ export function JobsTable({ jobs }: JobsTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end mb-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">Jobs</h2>
         <ColumnSelector 
           columns={columns}
           selectedColumns={selectedColumns}
@@ -82,11 +87,13 @@ export function JobsTable({ jobs }: JobsTableProps) {
               {selectedColumns.includes('recentRuns') && (
                 <TableCell>
                   <RunStatusIndicator 
-                    runs={job.recentRuns.map(run => 
-                      run.status === 'success' ? 'success' : 
-                      run.status === 'failed' ? 'failed' : 
-                      null
-                    )} 
+                    runs={job.recentRuns.map(run => run ? {
+                      id: run.id,
+                      status: run.status === 'success' ? 'success' : 
+                              run.status === 'failed' ? 'failed' : 
+                              null,
+                      timestamp: run.timestamp
+                    } : null)} 
                   />
                 </TableCell>
               )}

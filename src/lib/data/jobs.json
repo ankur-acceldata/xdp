@@ -6,11 +6,31 @@
       "createdBy": "John Doe",
       "createdAt": "2024-02-24T10:30:00Z",
       "recentRuns": [
-        { "status": "success", "timestamp": "2024-02-25T10:35:00Z" },
-        { "status": "success", "timestamp": "2024-02-24T10:35:00Z" },
-        { "status": "failed", "timestamp": "2024-02-23T10:35:00Z" },
-        { "status": "success", "timestamp": "2024-02-22T10:35:00Z" },
-        { "status": "success", "timestamp": "2024-02-21T10:35:00Z" }
+        { 
+          "id": "run-001-001", 
+          "status": "success", 
+          "timestamp": "2024-02-25T10:35:00Z" 
+        },
+        { 
+          "id": "run-001-002", 
+          "status": "success", 
+          "timestamp": "2024-02-24T10:35:00Z" 
+        },
+        { 
+          "id": "run-001-003", 
+          "status": "failed", 
+          "timestamp": "2024-02-23T10:35:00Z" 
+        },
+        { 
+          "id": "run-001-004", 
+          "status": "success", 
+          "timestamp": "2024-02-22T10:35:00Z" 
+        },
+        { 
+          "id": "run-001-005", 
+          "status": "success", 
+          "timestamp": "2024-02-21T10:35:00Z" 
+        }
       ]
     },
     {
@@ -19,12 +39,28 @@
       "createdBy": "Jane Smith",
       "createdAt": "2024-02-20T14:45:00Z",
       "recentRuns": [
-        { "status": "success", "timestamp": "2024-02-25T14:50:00Z" },
-        { "status": "success", "timestamp": "2024-02-18T14:50:00Z" },
-        { "status": "success", "timestamp": "2024-02-11T14:50:00Z" },
-        { "status": "success", "timestamp": "2024-02-04T14:50:00Z" },
-        { "status": null }
+        { 
+          "id": "run-002-001", 
+          "status": "success", 
+          "timestamp": "2024-02-25T14:50:00Z" 
+        },
+        { 
+          "id": "run-002-002", 
+          "status": "success", 
+          "timestamp": "2024-02-18T14:50:00Z" 
+        },
+        { 
+          "id": "run-002-003", 
+          "status": "success", 
+          "timestamp": "2024-02-11T14:50:00Z" 
+        },
+        { 
+          "id": "run-002-004", 
+          "status": "success", 
+          "timestamp": "2024-02-04T14:50:00Z" 
+        },
+        null
       ]
     }
   ]
-} 
+}
