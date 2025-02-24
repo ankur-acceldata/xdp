@@ -21,6 +21,8 @@ export default function JobsPage() {
   const [selectedRunColumns, setSelectedRunColumns] = useState<string[]>([
     'jobName', 'status', 'startedAt', 'completedAt', 'duration'
   ])
+  const [sortedJobs, setSortedJobs] = useState(jobsData.jobs)
+  const [sortedJobRuns, setSortedJobRuns] = useState<JobRun[]>([])
 
   useEffect(() => {
     // Simulate async data fetching
@@ -43,26 +45,58 @@ export default function JobsPage() {
       )
 
       setJobRuns(generatedRuns)
+      setSortedJobRuns(generatedRuns)
       setIsLoading(false)
     }, 1500) // 1.5 second delay to simulate loading
 
     return () => clearTimeout(timer)
   }, [])
 
-  const jobColumns = [
-    { id: 'name', label: 'Job Name' },
-    { id: 'createdBy', label: 'Created By' },
-    { id: 'createdAt', label: 'Created Date' },
-    { id: 'recentRuns', label: 'Recent Runs' }
-  ]
+  const handleJobSort = (columnId: string, direction: 'asc' | 'desc') => {
+    const sorted = [...jobsData.jobs].sort((a, b) => {
+      let comparison = 0
+      switch (columnId) {
+        case 'name':
+          comparison = a.name.localeCompare(b.name)
+          break
+        case 'createdBy':
+          comparison = a.createdBy.localeCompare(b.createdBy)
+          break
+        case 'createdAt':
+          comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          break
+      }
+      return direction === 'asc' ? comparison : -comparison
+    })
+    setSortedJobs(sorted)
+  }
 
-  const jobRunColumns = [
-    { id: 'jobName', label: 'Job Name' },
-    { id: 'status', label: 'Status' },
-    { id: 'startedAt', label: 'Started At' },
-    { id: 'completedAt', label: 'Completed At' },
-    { id: 'duration', label: 'Duration' }
-  ]
+  const handleJobRunSort = (columnId: string, direction: 'asc' | 'desc') => {
+    const sorted = [...jobRuns].sort((a, b) => {
+      let comparison = 0
+      switch (columnId) {
+        case 'jobName':
+          comparison = a.jobName.localeCompare(b.jobName)
+          break
+        case 'status':
+          comparison = a.status.localeCompare(b.status)
+          break
+        case 'startedAt':
+          comparison = new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime()
+          break
+        case 'completedAt':
+          if (!a.completedAt) return 1
+          if (!b.completedAt) return -1
+          comparison = new Date(a.completedAt).getTime() - new Date(b.completedAt).getTime()
+          break
+        case 'duration':
+          comparison = (a.duration || 0) - (b.duration || 0)
+          break
+      }
+      return direction === 'asc' ? comparison : -comparison
+    })
+    setSortedJobRuns(sorted)
+  }
 
   return (
     <div className="container mx-auto py-4">
@@ -92,7 +126,22 @@ export default function JobsPage() {
               <TabsTrigger value="runs">Job Runs</TabsTrigger>
             </TabsList>
             <ColumnSelector 
-              columns={activeTab === 'jobs' ? jobColumns : jobRunColumns}
+              columns={
+                activeTab === 'jobs' 
+                  ? [
+                      { id: 'name', label: 'Job Name', sortable: true },
+                      { id: 'createdBy', label: 'Created By', sortable: true },
+                      { id: 'createdAt', label: 'Created Date', sortable: true },
+                      { id: 'recentRuns', label: 'Recent Runs', sortable: false }
+                    ]
+                  : [
+                      { id: 'jobName', label: 'Job Name', sortable: true },
+                      { id: 'status', label: 'Status', sortable: true },
+                      { id: 'startedAt', label: 'Started At', sortable: true },
+                      { id: 'completedAt', label: 'Completed At', sortable: true },
+                      { id: 'duration', label: 'Duration', sortable: true }
+                    ]
+              }
               selectedColumns={activeTab === 'jobs' ? selectedJobColumns : selectedRunColumns}
               onColumnToggle={(columnId) => 
                 activeTab === 'jobs'
@@ -112,15 +161,17 @@ export default function JobsPage() {
         </div>
         <TabsContent value="jobs">
           <JobsTable 
-            jobs={jobsData.jobs} 
+            jobs={sortedJobs} 
             selectedColumns={selectedJobColumns}
+            onSortChange={handleJobSort}
           />
         </TabsContent>
         <TabsContent value="runs">
           <JobRunsTable 
-            runs={jobRuns} 
+            runs={sortedJobRuns} 
             isLoading={isLoading}
             selectedColumns={selectedRunColumns}
+            onSortChange={handleJobRunSort}
           />
         </TabsContent>
       </Tabs>

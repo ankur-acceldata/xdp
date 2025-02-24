@@ -1,11 +1,9 @@
 'use client'
 
 import React from 'react'
-import { TableCell } from '@/components/ui/table'
 import { DataTable } from '@/components/ui/data-table'
 import { RunStatusIndicator } from './run-status-indicator'
 import { format } from 'date-fns'
-import { ColumnDefinition } from './column-selector'
 
 export interface Job {
   id: string;
@@ -22,53 +20,57 @@ export interface Job {
 interface JobsTableProps {
   jobs: Job[];
   selectedColumns?: string[];
+  onSortChange?: (columnId: string, direction: 'asc' | 'desc') => void;
 }
 
 export function JobsTable({ 
   jobs, 
-  selectedColumns: propSelectedColumns 
+  selectedColumns: propSelectedColumns,
+  onSortChange
 }: JobsTableProps) {
-  const columns: ColumnDefinition[] = [
-    { id: 'name', label: 'Job Name' },
-    { id: 'createdBy', label: 'Created By' },
-    { id: 'createdAt', label: 'Created Date' },
-    { id: 'recentRuns', label: 'Recent Runs' }
+  const columns = [
+    { 
+      id: 'name', 
+      header: 'Job Name',
+      cell: (job: Job) => job.name,
+      sortable: true
+    },
+    { 
+      id: 'createdBy', 
+      header: 'Created By',
+      cell: (job: Job) => job.createdBy,
+      sortable: true
+    },
+    { 
+      id: 'createdAt', 
+      header: 'Created Date',
+      cell: (job: Job) => format(new Date(job.createdAt), 'MMM dd, yyyy'),
+      sortable: true
+    },
+    { 
+      id: 'recentRuns', 
+      header: 'Recent Runs',
+      cell: (job: Job) => (
+        <RunStatusIndicator 
+          runs={job.recentRuns.map(run => run ? {
+            id: run.id,
+            status: run.status === 'success' ? 'success' : 
+                    run.status === 'failed' ? 'failed' : 
+                    null,
+            timestamp: run.timestamp
+          } : null)} 
+        />
+      ),
+      sortable: false
+    }
   ]
-
-  const renderJobRow = (job: Job, selectedColumns: string[]) => (
-    <>
-      {selectedColumns.includes('name') && (
-        <TableCell>{job.name}</TableCell>
-      )}
-      {selectedColumns.includes('createdBy') && (
-        <TableCell>{job.createdBy}</TableCell>
-      )}
-      {selectedColumns.includes('createdAt') && (
-        <TableCell>
-          {format(new Date(job.createdAt), 'MMM dd, yyyy')}
-        </TableCell>
-      )}
-      {selectedColumns.includes('recentRuns') && (
-        <TableCell>
-          <RunStatusIndicator 
-            runs={job.recentRuns.map(run => run ? {
-              id: run.id,
-              status: run.status === 'success' ? 'success' : 
-                      run.status === 'failed' ? 'failed' : 
-                      null,
-              timestamp: run.timestamp
-            } : null)} 
-          />
-        </TableCell>
-      )}
-    </>
-  )
 
   return (
     <DataTable 
       data={jobs}
       columns={columns}
-      renderRow={renderJobRow}
+      selectedColumns={propSelectedColumns}
+      onSortChange={onSortChange}
     />
   )
 } 

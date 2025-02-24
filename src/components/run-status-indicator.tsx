@@ -31,7 +31,7 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
       <div 
         key={index} 
         className={cn(
-          'w-4 h-4 rounded-full', // Slightly bigger dots
+          'w-4 h-4 rounded-full cursor-pointer',
           statusClasses[status]
         )}
       />
@@ -39,7 +39,7 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
       <div 
         key={index} 
         className={cn(
-          'w-4 h-4 flex items-center justify-center font-bold', 
+          'w-4 h-4 flex items-center justify-center font-bold cursor-pointer', 
           statusClasses.null
         )}
       >
