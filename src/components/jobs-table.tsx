@@ -65,7 +65,6 @@ export function JobsTable({ jobs }: JobsTableProps) {
       data={jobs}
       columns={columns}
       renderRow={renderJobRow}
-      title="Jobs"
     />
   )
 } 

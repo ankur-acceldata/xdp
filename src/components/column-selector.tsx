@@ -23,7 +23,7 @@ export function ColumnSelector({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="border-none shadow-none">
           <Settings2 className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
