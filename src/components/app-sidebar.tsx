@@ -37,45 +37,12 @@ const data = {
       title: "Clusters",
       url: "/dashboard/clusters",
       icon: Boxes,
-      isActive: true,
-      items: [
-        {
-          title: "Create Cluster",
-          url: "/dashboard/clusters/create",
-        },
-        {
-          title: "List Clusters",
-          url: "/dashboard/clusters/list",
-        },
-        {
-          title: "Settings",
-          url: "/dashboard/clusters/settings",
-        },
-      ],
+      isActive: true
     },
     {
       title: "Data Sources",
       url: "/dashboard/data-sources",
       icon: Database,
-    },
-    {
-      title: "Jupyter Notebooks",
-      url: "/dashboard/jupyter-notebooks",
-      icon: BookOpen,
-      items: [
-        {
-          title: "My Notebooks",
-          url: "/dashboard/jupyter-notebooks/my-notebooks",
-        },
-        {
-          title: "Shared Notebooks",
-          url: "/dashboard/jupyter-notebooks/shared-notebooks",
-        },
-        {
-          title: "Create Notebook",
-          url: "/dashboard/jupyter-notebooks/create-notebook",
-        }
-      ],
     },
     {
       title: "Jobs",
