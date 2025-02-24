@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -19,58 +21,79 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
   const statusClasses = {
     success: 'bg-green-500',
     failed: 'bg-red-500',
-    null: 'bg-gray-300'
+    null: 'text-gray-400'
   }
 
-  const renderRun = (run: RunDetails | null, index: number) => {
+  const renderRun = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
     const status = run?.status ?? null
     
-    const dotContent = (
+    const dotContent = status ? (
       <div 
         key={index} 
         className={cn(
           'w-3 h-3 rounded-full', // Slightly bigger dots
-          status ? statusClasses[status] : statusClasses.null
+          statusClasses[status]
         )}
       />
+    ) : (
+      <div 
+        key={index} 
+        className={cn(
+          'w-3 h-3 flex items-center justify-center font-bold', 
+          statusClasses.null
+        )}
+      >
+        —
+      </div>
     )
 
-    if (!run) {
-      return (
-        <Tooltip key={index}>
-          <TooltipTrigger>{dotContent}</TooltipTrigger>
-          <TooltipContent>
-            <p>No run data available</p>
-          </TooltipContent>
-        </Tooltip>
-      )
-    }
-
-    return (
+    const runElement = !run ? (
       <Tooltip key={index}>
-        <TooltipTrigger>{dotContent}</TooltipTrigger>
+        <TooltipTrigger asChild>
+          <div>{dotContent}</div>
+        </TooltipTrigger>
         <TooltipContent>
-          <div className="text-sm">
-            <p>Run ID: {run.id ?? 'N/A'}</p>
-            <p>Status: {run.status}</p>
+          <p className="text-xs">No run data available</p>
+        </TooltipContent>
+      </Tooltip>
+    ) : (
+      <Tooltip key={index}>
+        <TooltipTrigger asChild>
+          <div>{dotContent}</div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <div className="text-xs">
+            <p><span className="font-bold">Run ID:</span> {run.id ?? 'N/A'}</p>
+            <p><span className="font-bold">Status:</span> {run.status}</p>
             {run.timestamp && (
               <p>
-                Date: {format(new Date(run.timestamp), 'MMM dd, yyyy HH:mm:ss')}
+                <span className="font-bold">Date:</span> {format(new Date(run.timestamp), 'MMM dd, yyyy HH:mm:ss')}
               </p>
             )}
           </div>
         </TooltipContent>
       </Tooltip>
     )
+
+    return isRecentRun ? (
+      <div key={index} className="flex items-center">
+        {runElement}
+        <div className="h-4 ms-2 border-r border-gray-300 self-center" />
+      </div>
+    ) : runElement
   }
 
   return (
     <TooltipProvider>
-      <div className="flex space-x-1.5 items-center">
-        {runs.map((run, index) => renderRun(run, index))}
-        {runs.length < 5 && 
-          Array(5 - runs.length).fill(null).map((_, index) => renderRun(null, runs.length + index))
-        }
+      <div className="flex items-center">
+        <div className="flex space-x-3 items-center">
+          {runs.map((run, index) => renderRun(run, index, index === 0))}
+          {runs.length < 5 && 
+            Array(5 - runs.length).fill(null).map((_, index) => 
+              renderRun(null, runs.length + index, false)
+            )
+          }
+        </div>
       </div>
     </TooltipProvider>
   )
