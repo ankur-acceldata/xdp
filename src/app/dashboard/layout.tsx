@@ -1,13 +1,13 @@
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 
 export default function DashboardLayout({ 
   children 
 }: { 
-  children: React.ReactNode 
+  children: ReactNode 
 }) {
   return (
     <div className="dashboard-layout">
@@ -19,6 +19,7 @@ export default function DashboardLayout({
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
+            <h1 className="text-2xl font-bold">Dashboard</h1>
           </div>
           <ThemeSwitcher />
         </div>
@@ -28,7 +29,6 @@ export default function DashboardLayout({
         </div>
       </SidebarInset>
     </SidebarProvider>
-      
     </div>
   );
 }

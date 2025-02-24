@@ -9,6 +9,7 @@ import {
   Frame,
   Map,
   PieChart,
+  Workflow,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -23,7 +24,6 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
 } from "@/components/ui/sidebar"
-import { CreateNotebookDialog } from "@/components/jupyter-notebook/create-notebook-dialog"
 
 // This is sample data.
 const data = {
@@ -76,7 +76,12 @@ const data = {
           url: "/dashboard/jupyter-notebooks/create-notebook",
         }
       ],
-    }
+    },
+    {
+      title: "Jobs",
+      url: "/dashboard/jobs",
+      icon: Workflow,
+    },
   ],
   projects: [
     {
@@ -125,10 +130,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <SidebarGroup className="mt-4">
-          <SidebarGroupLabel>Jupyter Notebooks</SidebarGroupLabel>
-          <CreateNotebookDialog />
-        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
