@@ -1,8 +1,16 @@
+'use client'
+
 import React from 'react'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Settings2 } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export interface ColumnDefinition {
   id: string;
@@ -21,34 +29,25 @@ export function ColumnSelector({
   onColumnToggle 
 }: ColumnSelectorProps) {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="border-none shadow-none">
           <Settings2 className="h-4 w-4" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-56">
-        <div className="grid gap-4">
-          <h4 className="font-medium text-sm">Select Columns</h4>
-          <div className="grid gap-2">
-            {columns.map((column) => (
-              <div key={column.id} className="flex items-center space-x-2">
-                <Checkbox
-                  id={column.id}
-                  checked={selectedColumns.includes(column.id)}
-                  onCheckedChange={() => onColumnToggle(column.id)}
-                />
-                <label 
-                  htmlFor={column.id} 
-                  className="text-sm font-medium leading-none"
-                >
-                  {column.label}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Select Columns</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {columns.map((column) => (
+          <DropdownMenuCheckboxItem
+            key={column.id}
+            checked={selectedColumns.includes(column.id)}
+            onCheckedChange={() => onColumnToggle(column.id)}
+          >
+            {column.label}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 } 

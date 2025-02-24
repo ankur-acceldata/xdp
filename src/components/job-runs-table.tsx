@@ -20,9 +20,14 @@ export interface JobRun {
 interface JobRunsTableProps {
   runs: JobRun[];
   isLoading?: boolean;
+  selectedColumns?: string[];
 }
 
-export function JobRunsTable({ runs, isLoading }: JobRunsTableProps) {
+export function JobRunsTable({ 
+  runs, 
+  isLoading,
+  selectedColumns: propSelectedColumns 
+}: JobRunsTableProps) {
   const columns: ColumnDefinition[] = [
     { id: 'jobName', label: 'Job Name' },
     { id: 'status', label: 'Status' },

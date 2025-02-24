@@ -8,11 +8,19 @@ import { FilterToolbar } from '@/components/filter-toolbar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Plus } from 'lucide-react'
+import { ColumnSelector } from '@/components/column-selector'
 import jobsData from '@/lib/data/jobs.json'
 
 export default function JobsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [jobRuns, setJobRuns] = useState<JobRun[]>([])
+  const [activeTab, setActiveTab] = useState<'jobs' | 'runs'>('jobs')
+  const [selectedJobColumns, setSelectedJobColumns] = useState<string[]>([
+    'name', 'createdBy', 'createdAt', 'recentRuns'
+  ])
+  const [selectedRunColumns, setSelectedRunColumns] = useState<string[]>([
+    'jobName', 'status', 'startedAt', 'completedAt', 'duration'
+  ])
 
   useEffect(() => {
     // Simulate async data fetching
@@ -41,6 +49,21 @@ export default function JobsPage() {
     return () => clearTimeout(timer)
   }, [])
 
+  const jobColumns = [
+    { id: 'name', label: 'Job Name' },
+    { id: 'createdBy', label: 'Created By' },
+    { id: 'createdAt', label: 'Created Date' },
+    { id: 'recentRuns', label: 'Recent Runs' }
+  ]
+
+  const jobRunColumns = [
+    { id: 'jobName', label: 'Job Name' },
+    { id: 'status', label: 'Status' },
+    { id: 'startedAt', label: 'Started At' },
+    { id: 'completedAt', label: 'Completed At' },
+    { id: 'duration', label: 'Duration' }
+  ]
+
   return (
     <div className="container mx-auto py-4">
       <FilterToolbar 
@@ -57,20 +80,47 @@ export default function JobsPage() {
         />
       </FilterToolbar>
 
-      <Tabs defaultValue="jobs" className="w-full mt-4">
+      <Tabs 
+        defaultValue="jobs" 
+        className="w-full mt-4"
+        onValueChange={(value) => setActiveTab(value as 'jobs' | 'runs')}
+      >
         <div className="flex items-center justify-between mb-4">
-          <TabsList className="inline-flex">
-            <TabsTrigger value="jobs">Jobs</TabsTrigger>
-            <TabsTrigger value="runs">Job Runs</TabsTrigger>
-          </TabsList>
+          <div className="flex items-center justify-between space-x-4 w-full">
+            <TabsList className="inline-flex">
+              <TabsTrigger value="jobs">Jobs</TabsTrigger>
+              <TabsTrigger value="runs">Job Runs</TabsTrigger>
+            </TabsList>
+            <ColumnSelector 
+              columns={activeTab === 'jobs' ? jobColumns : jobRunColumns}
+              selectedColumns={activeTab === 'jobs' ? selectedJobColumns : selectedRunColumns}
+              onColumnToggle={(columnId) => 
+                activeTab === 'jobs'
+                  ? setSelectedJobColumns(prev => 
+                      prev.includes(columnId)
+                        ? prev.filter(id => id !== columnId)
+                        : [...prev, columnId]
+                    )
+                  : setSelectedRunColumns(prev => 
+                      prev.includes(columnId)
+                        ? prev.filter(id => id !== columnId)
+                        : [...prev, columnId]
+                    )
+              }
+            />
+          </div>
         </div>
         <TabsContent value="jobs">
-          <JobsTable jobs={jobsData.jobs} />
+          <JobsTable 
+            jobs={jobsData.jobs} 
+            selectedColumns={selectedJobColumns}
+          />
         </TabsContent>
         <TabsContent value="runs">
           <JobRunsTable 
             runs={jobRuns} 
-            isLoading={isLoading} 
+            isLoading={isLoading}
+            selectedColumns={selectedRunColumns}
           />
         </TabsContent>
       </Tabs>

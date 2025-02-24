@@ -31,7 +31,7 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
       <div 
         key={index} 
         className={cn(
-          'w-3 h-3 rounded-full', // Slightly bigger dots
+          'w-4 h-4 rounded-full', // Slightly bigger dots
           statusClasses[status]
         )}
       />
@@ -39,7 +39,7 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
       <div 
         key={index} 
         className={cn(
-          'w-3 h-3 flex items-center justify-center font-bold', 
+          'w-4 h-4 flex items-center justify-center font-bold', 
           statusClasses.null
         )}
       >
@@ -86,7 +86,7 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
   return (
     <TooltipProvider>
       <div className="flex items-center">
-        <div className="flex space-x-3 items-center">
+        <div className="flex space-x-2 items-center">
           {runs.map((run, index) => renderRun(run, index, index === 0))}
           {runs.length < 5 && 
             Array(5 - runs.length).fill(null).map((_, index) => 

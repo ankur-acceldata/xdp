@@ -21,9 +21,13 @@ export interface Job {
 
 interface JobsTableProps {
   jobs: Job[];
+  selectedColumns?: string[];
 }
 
-export function JobsTable({ jobs }: JobsTableProps) {
+export function JobsTable({ 
+  jobs, 
+  selectedColumns: propSelectedColumns 
+}: JobsTableProps) {
   const columns: ColumnDefinition[] = [
     { id: 'name', label: 'Job Name' },
     { id: 'createdBy', label: 'Created By' },

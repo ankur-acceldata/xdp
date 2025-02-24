@@ -16,16 +16,18 @@ interface DataTableProps<T> {
   columns: ColumnDefinition[];
   renderRow: (item: T, selectedColumns: string[]) => React.ReactNode;
   isLoading?: boolean;
+  selectedColumns?: string[];
 }
 
 export function DataTable<T>({ 
   data, 
   columns, 
   renderRow, 
-  isLoading = false
+  isLoading = false,
+  selectedColumns: propSelectedColumns
 }: DataTableProps<T>) {
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
-    columns.map(col => col.id)
+    propSelectedColumns || columns.map(col => col.id)
   )
   const [columnWidths, setColumnWidths] = useState<{[key: string]: number}>({})
   const tableRef = useRef<HTMLTableElement>(null)
@@ -88,13 +90,6 @@ export function DataTable<T>({
                   </div>
                 </TableHead>
               ))}
-            <TableHead className="text-right">
-              <ColumnSelector 
-                columns={columns}
-                selectedColumns={selectedColumns}
-                onColumnToggle={handleColumnToggle}
-              />
-            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
