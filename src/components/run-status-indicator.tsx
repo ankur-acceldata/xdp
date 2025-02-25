@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { format } from 'date-fns'
 
-type RunStatus = 'success' | 'failed' | null
+export type RunStatus = 'success' | 'failed' | 'pending' | null
 
 interface RunDetails {
   id?: string;
@@ -21,21 +21,36 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
   const statusClasses = {
     success: 'bg-green-500',
     failed: 'bg-red-500',
+    pending: 'bg-blue-400 animate-pulse',
     null: 'text-gray-400'
   }
 
-  const renderRun = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
-    const status = run?.status ?? null
-    
-    const dotContent = status ? (
+  const renderPending = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
+    return (
+      <span className="relative flex size-3">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
+        <span className="relative inline-flex size-3 rounded-full bg-amber-400"></span>
+      </span>
+    )
+  }
+
+  const renderCompleted = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
+    return (
       <div 
         key={index} 
         className={cn(
           'w-4 h-4 rounded-full cursor-pointer',
-          statusClasses[status]
+          {
+            'bg-green-500': run?.status === 'success',
+            'bg-red-500': run?.status === 'failed',
+          }
         )}
       />
-    ) : (
+    )
+  }
+
+  const renderNull = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
+    return (
       <div 
         key={index} 
         className={cn(
@@ -46,6 +61,14 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
         —
       </div>
     )
+  }
+
+  const renderRun = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
+    const status = run?.status ?? null
+    
+    const dotContent = status === 'pending' ? renderPending(run, index, isRecentRun)
+      : status ? renderCompleted(run, index, isRecentRun)
+      : renderNull(run, index, isRecentRun);
 
     const runElement = !run ? (
       <Tooltip key={index}>
@@ -64,7 +87,11 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
         <TooltipContent>
           <div className="text-xs">
             <p><span className="font-bold">Run ID:</span> {run.id ?? 'N/A'}</p>
-            <p><span className="font-bold">Status:</span> {run.status}</p>
+            <p>
+              <span className="font-bold">Status:</span> {run.status === 'pending' 
+                ? 'In Progress' 
+                : run.status}
+            </p>
             {run.timestamp && (
               <p>
                 <span className="font-bold">Date:</span> {format(new Date(run.timestamp), 'MMM dd, yyyy HH:mm:ss')}
@@ -82,6 +109,7 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
       </div>
     ) : runElement
   }
+  console.log(runs)
 
   return (
     <TooltipProvider>

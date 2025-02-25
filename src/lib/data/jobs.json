@@ -61,6 +61,39 @@
         },
         null
       ]
+    },
+    {
+      "id": "job-003",
+      "name": "Monthly Report Generation",
+      "createdBy": "Alice Johnson",
+      "createdAt": "2024-02-26T09:00:00Z",
+      "recentRuns": [
+        { 
+          "id": "run-003-001", 
+          "status": "pending", 
+          "timestamp": "2024-02-26T09:05:00Z" 
+        },
+        { 
+          "id": "run-003-002", 
+          "status": "success", 
+          "timestamp": "2024-02-25T09:05:00Z" 
+        },
+        { 
+          "id": "run-003-003", 
+          "status": "success", 
+          "timestamp": "2024-02-24T09:05:00Z" 
+        },
+        { 
+          "id": "run-003-004", 
+          "status": "failed", 
+          "timestamp": "2024-02-23T09:05:00Z" 
+        },
+        { 
+          "id": "run-003-005", 
+          "status": "success", 
+          "timestamp": "2024-02-22T09:05:00Z" 
+        }
+      ]
     }
   ]
 }

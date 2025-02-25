@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { DataTable } from '@/components/ui/data-table'
-import { RunStatusIndicator } from './run-status-indicator'
+import { RunStatus, RunStatusIndicator } from './run-status-indicator'
 import { format } from 'date-fns'
 
 export interface Job {
@@ -54,9 +54,7 @@ export function JobsTable({
         <RunStatusIndicator 
           runs={job.recentRuns.map(run => run ? {
             id: run.id,
-            status: run.status === 'success' ? 'success' : 
-                    run.status === 'failed' ? 'failed' : 
-                    null,
+            status: run.status as RunStatus,
             timestamp: run.timestamp
           } : null)} 
         />
