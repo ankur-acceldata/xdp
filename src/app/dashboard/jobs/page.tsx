@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Plus } from 'lucide-react'
 import { ColumnSelector } from '@/components/column-selector'
 import jobsData from '@/lib/data/jobs.json'
+import Link from 'next/link'
 
 export default function JobsPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -102,9 +103,11 @@ export default function JobsPage() {
     <div className="container mx-auto py-4">
       <FilterToolbar 
         rightActions={
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Create Job
+          <Button asChild>
+            <Link href="/dashboard/jobs/create">
+              <Plus className="mr-2 h-4 w-4" />
+              Create Job
+            </Link>
           </Button>
         }
       >
