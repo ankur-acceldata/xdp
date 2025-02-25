@@ -48,7 +48,7 @@ export default function JobsPage() {
       setJobRuns(generatedRuns)
       setSortedJobRuns(generatedRuns)
       setIsLoading(false)
-    }, 1500) // 1.5 second delay to simulate loading
+    }, 2000) // 1.5 second delay to simulate loading
 
     return () => clearTimeout(timer)
   }, [])
@@ -99,6 +99,22 @@ export default function JobsPage() {
     setSortedJobRuns(sorted)
   }
 
+  const handleColumnToggle = (columnId: string) => {
+    if (activeTab === 'jobs') {
+      setSelectedJobColumns(prev => 
+        prev.includes(columnId)
+          ? prev.filter(id => id !== columnId)
+          : [...prev, columnId]
+      )
+    } else {
+      setSelectedRunColumns(prev => 
+        prev.includes(columnId)
+          ? prev.filter(id => id !== columnId)
+          : [...prev, columnId]
+      )
+    }
+  }
+
   return (
     <div className="container mx-auto py-4">
       <FilterToolbar 
@@ -128,43 +144,33 @@ export default function JobsPage() {
               <TabsTrigger value="jobs">Jobs</TabsTrigger>
               <TabsTrigger value="runs">Job Runs</TabsTrigger>
             </TabsList>
-            <ColumnSelector 
+            <ColumnSelector
               columns={
                 activeTab === 'jobs' 
                   ? [
-                      { id: 'name', label: 'Job Name', sortable: true },
-                      { id: 'createdBy', label: 'Created By', sortable: true },
-                      { id: 'createdAt', label: 'Created Date', sortable: true },
-                      { id: 'recentRuns', label: 'Recent Runs', sortable: false }
+                      { id: 'name', label: 'Job Name', primary: true },
+                      { id: 'createdBy', label: 'Created By' },
+                      { id: 'createdAt', label: 'Created Date' },
+                      { id: 'recentRuns', label: 'Recent Runs' }
                     ]
                   : [
-                      { id: 'jobName', label: 'Job Name', sortable: true },
-                      { id: 'status', label: 'Status', sortable: true },
-                      { id: 'startedAt', label: 'Started At', sortable: true },
-                      { id: 'completedAt', label: 'Completed At', sortable: true },
-                      { id: 'duration', label: 'Duration', sortable: true }
+                      { id: 'jobName', label: 'Job Name', primary: true },
+                      { id: 'status', label: 'Status' },
+                      { id: 'startedAt', label: 'Started At' },
+                      { id: 'completedAt', label: 'Completed At' },
+                      { id: 'duration', label: 'Duration' }
                     ]
               }
               selectedColumns={activeTab === 'jobs' ? selectedJobColumns : selectedRunColumns}
-              onColumnToggle={(columnId) => 
-                activeTab === 'jobs'
-                  ? setSelectedJobColumns(prev => 
-                      prev.includes(columnId)
-                        ? prev.filter(id => id !== columnId)
-                        : [...prev, columnId]
-                    )
-                  : setSelectedRunColumns(prev => 
-                      prev.includes(columnId)
-                        ? prev.filter(id => id !== columnId)
-                        : [...prev, columnId]
-                    )
-              }
+              onColumnToggle={handleColumnToggle}
+              primaryColumnId={activeTab === 'jobs' ? 'name' : 'jobName'}
             />
           </div>
         </div>
         <TabsContent value="jobs">
-          <JobsTable 
+          <JobsTable
             jobs={sortedJobs} 
+            isLoading={isLoading}
             selectedColumns={selectedJobColumns}
             onSortChange={handleJobSort}
           />

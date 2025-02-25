@@ -27,9 +27,9 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
 
   const renderPending = (run: RunDetails | null, index: number, isRecentRun: boolean) => {
     return (
-      <span className="relative flex size-3">
+      <span className="relative flex size-4">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
-        <span className="relative inline-flex size-3 rounded-full bg-amber-400"></span>
+        <span className="relative inline-flex size-4 rounded-full bg-amber-400"></span>
       </span>
     )
   }
@@ -109,7 +109,6 @@ export function RunStatusIndicator({ runs }: RunStatusIndicatorProps) {
       </div>
     ) : runElement
   }
-  console.log(runs)
 
   return (
     <TooltipProvider>

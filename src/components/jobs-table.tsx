@@ -19,12 +19,14 @@ export interface Job {
 
 interface JobsTableProps {
   jobs: Job[];
+  isLoading: boolean;
   selectedColumns?: string[];
   onSortChange?: (columnId: string, direction: 'asc' | 'desc') => void;
 }
 
 export function JobsTable({ 
   jobs, 
+  isLoading,
   selectedColumns: propSelectedColumns,
   onSortChange
 }: JobsTableProps) {
@@ -61,14 +63,17 @@ export function JobsTable({
       ),
       sortable: false
     }
-  ]
+  ].filter(column => propSelectedColumns?.includes(column.id) || !propSelectedColumns)
 
   return (
-    <DataTable 
-      data={jobs}
-      columns={columns}
-      selectedColumns={propSelectedColumns}
-      onSortChange={onSortChange}
-    />
+    <div className="space-y-4">
+      <DataTable 
+        data={jobs}
+        isLoading={isLoading}
+        columns={columns}
+        selectedColumns={propSelectedColumns}
+        onSortChange={onSortChange}
+      />
+    </div>
   )
 } 

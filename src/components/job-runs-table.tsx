@@ -73,15 +73,17 @@ export function JobRunsTable({
         : 'N/A',
       sortable: true
     }
-  ]
+  ].filter(column => propSelectedColumns?.includes(column.id) || !propSelectedColumns)
 
   return (
-    <DataTable 
-      data={runs}
-      columns={columns}
-      isLoading={isLoading}
-      selectedColumns={propSelectedColumns}
-      onSortChange={onSortChange}
-    />
+    <div className="space-y-4">
+      <DataTable 
+        data={runs}
+        columns={columns}
+        selectedColumns={propSelectedColumns}
+        isLoading={isLoading}
+        onSortChange={onSortChange}
+      />
+    </div>
   )
 } 
